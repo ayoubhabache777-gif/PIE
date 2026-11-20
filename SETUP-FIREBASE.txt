@@ -1,0 +1,7 @@
+1) https://console.firebase.google.com ثم Add project (مجاني، بدون Analytics).
+2) Build ثم Authentication ثم Get started ثم فعّل: Email/Password، وفعّل أيضا "Email link (passwordless sign-in)" داخل نفس المزوّد.
+3) Authentication ثم Settings ثم Authorized domains: أضف نطاق Netlify (xxxx.netlify.app).
+4) Build ثم Firestore Database ثم Create database (Production mode).
+5) Firestore ثم Rules: الصق محتوى firestore.rules ثم Publish.
+6) Project settings ثم Your apps ثم أيقونة الويب </> ثم انسخ firebaseConfig والصق القيم في firebase-config.js.
+7) ارفع المجلد على Netlify من جديد. (الرقم adati-v14 في sw.js مغيَّر أصلا.)

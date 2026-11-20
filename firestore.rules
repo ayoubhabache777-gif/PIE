@@ -1,0 +1,40 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+    match /users/{u} {
+      allow read: if request.auth != null && request.auth.uid == u;
+      allow create: if request.auth != null && request.auth.uid == u && (request.resource.data.role == 'student' || (request.resource.data.role == 'teacher' && request.resource.data.code == '2558'));
+      allow update: if request.auth != null && request.auth.uid == u && request.resource.data.role == resource.data.role;
+    }
+    match /codes/{c} { allow get, create: if request.auth != null; }
+    match /sections/{s} {
+      allow create: if request.auth != null && request.resource.data.teacher == request.auth.uid && get(/databases/$(db)/documents/users/$(request.auth.uid)).data.role == 'teacher';
+      allow read, update, delete: if request.auth != null && resource.data.teacher == request.auth.uid;
+      match /private/{d} {
+        allow read, write: if request.auth != null && getAfter(/databases/$(db)/documents/sections/$(s)).data.teacher == request.auth.uid;
+      }
+      match /answers/{st} {
+        allow read: if request.auth != null && get(/databases/$(db)/documents/sections/$(s)).data.teacher == request.auth.uid;
+        allow write: if request.auth != null && request.auth.uid == st;
+      }
+      match /pdfs/{st} {
+        allow read: if request.auth != null && (request.auth.uid == st || get(/databases/$(db)/documents/sections/$(s)).data.teacher == request.auth.uid);
+        allow create, update: if request.auth != null && request.auth.uid == st && request.resource.data.n <= 7;
+        allow delete: if request.auth != null && request.auth.uid == st;
+        match /c/{i} {
+          allow read: if request.auth != null && get(/databases/$(db)/documents/sections/$(s)).data.teacher == request.auth.uid;
+          allow create, update: if request.auth != null && request.auth.uid == st && request.resource.data.d.size() <= 950000;
+          allow delete: if request.auth != null && request.auth.uid == st;
+        }
+      }
+      match /grades/{st} {
+        allow read: if request.auth != null && (get(/databases/$(db)/documents/sections/$(s)).data.teacher == request.auth.uid || request.auth.uid == st);
+        allow write: if request.auth != null && get(/databases/$(db)/documents/sections/$(s)).data.teacher == request.auth.uid;
+      }
+      match /students/{st} {
+        allow read, write: if request.auth != null && get(/databases/$(db)/documents/sections/$(s)).data.teacher == request.auth.uid;
+        allow read, write: if request.auth != null && request.auth.uid == st;
+      }
+    }
+  }
+}

@@ -1,0 +1,143 @@
+/* PIE — واجهة تسجيل الدخول وإنشاء الحساب (Neumorphism + بطاقة تنقلب + حدود كهربائية) */
+#pp.auth-on {
+  --nb: #e7ebf0; --sd: rgba(163, 177, 198, .65); --sl: rgba(255, 255, 255, .95);
+  --ni: #303943; --ns: #6f7882; --na: #087cff; --nh: #006cff; --ng: #fff;
+  background: var(--nb);
+}
+:root[data-theme="dark"] #pp.auth-on {
+  --nb: var(--bg); --sd: rgba(0, 0, 0, .55); --sl: rgba(255, 255, 255, .055);
+  --ni: #EAEDFF; --ns: #A3ABD6; --na: #8DB4FF; --nh: #7FA8FF; --ng: #0C1130;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) #pp.auth-on {
+    --nb: var(--bg); --sd: rgba(0, 0, 0, .55); --sl: rgba(255, 255, 255, .055);
+    --ni: #EAEDFF; --ns: #A3ABD6; --na: #8DB4FF; --nh: #7FA8FF; --ng: #0C1130;
+  }
+}
+
+/* رأس النافذة والتذييل بنفس الأسلوب */
+#pp.auth-on .w { position: relative; z-index: 1; }
+#pp.auth-on .x { background: var(--nb); border: 0; color: var(--ni); box-shadow: 5px 5px 10px var(--sd), -5px -5px 10px var(--sl); }
+#pp.auth-on .ph b { color: var(--ni); }
+#pp.auth-on .ph small, #pp.auth-on .pf, #pp.auth-on .pf span { color: var(--ns); }
+#pp.auth-on .pf b { color: var(--ni); }
+#pp.auth-on .pf { border-top-color: transparent; }
+
+/* كرات الخلفية العائمة */
+#pp .au-bg { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+#pp .bgc { position: absolute; border-radius: 50%; background: var(--nb); box-shadow: 15px 15px 30px var(--sd), -15px -15px 30px var(--sl); animation: auFloat 6s ease-in-out infinite; }
+#pp .bgc.b1 { width: 150px; height: 150px; top: 7%; inset-inline-start: -46px; }
+#pp .bgc.b2 { width: 110px; height: 110px; bottom: 7%; inset-inline-end: -34px; animation-delay: 1.5s; }
+#pp .bgc.b3 { width: 46px; height: 46px; top: 22%; inset-inline-end: 12%; animation-delay: 3s; }
+@keyframes auFloat { 50% { transform: translateY(-18px); } }
+
+/* البطاقة */
+#pp .au { position: relative; z-index: 1; width: min(400px, 100%); margin: 4px auto 0; perspective: 1600px; }
+#pp .au-card { position: relative; width: 100%; height: 520px; transform-style: preserve-3d; transition: transform .9s cubic-bezier(.68, -.45, .27, 1.45), height .5s ease; }
+#pp .au-card.flipped { transform: rotateY(180deg); }
+#pp .au-panel { position: absolute; top: 0; inset-inline: 0; padding: 34px 28px 30px; border-radius: 32px; background: var(--nb); box-shadow: 18px 18px 36px var(--sd), -18px -18px 36px var(--sl); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+#pp .au-signup { transform: rotateY(180deg); }
+#pp .au form { display: block; }
+
+#pp .au-logo { width: 78px; height: 78px; margin: 0 auto 14px; border-radius: 50%; display: grid; place-items: center; color: var(--na); background: var(--nb); box-shadow: 9px 9px 18px var(--sd), -9px -9px 18px var(--sl); transition: .4s ease; }
+#pp .au-logo:hover { transform: translateY(-5px) rotate(8deg); }
+#pp .au-logo svg { width: 30px; height: 30px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+#pp .au h1 { margin: 0 0 6px; text-align: center; font: 700 26px/1.3 var(--font-display); color: var(--ni); }
+#pp .au .au-sub { text-align: center; color: var(--ns); font-size: 13px; margin: 0 0 26px; }
+
+/* الخانات: حدود كهربائية عند التركيز + عنوان عائم */
+#pp .au .ig { position: relative; height: 58px; margin-bottom: 19px; }
+#pp .au .eb, #pp .au .eg { position: absolute; pointer-events: none; opacity: 0; transition: opacity .2s ease; overflow: hidden; }
+#pp .au .eb { inset: -2px; border-radius: 19px; }
+#pp .au .eg { inset: -4px; border-radius: 21px; filter: blur(7px); }
+#pp .au .eb::before, #pp .au .eg::before {
+  content: ""; position: absolute; width: 170%; height: 170%; left: -35%; top: -35%;
+  background: conic-gradient(from 0deg, transparent 0deg, transparent 30deg, #00eaff 45deg, #00aaff 65deg, #006cff 80deg, transparent 105deg, transparent 360deg);
+  animation: auSpin 1.1s linear infinite; animation-play-state: paused;
+}
+#pp .au .eb::after { content: ""; position: absolute; inset: 2px; border-radius: 17px; background: var(--nb); }
+#pp .au .ig:focus-within .eb { opacity: 1; }
+#pp .au .ig:focus-within .eg { opacity: .55; }
+#pp .au .ig:focus-within .eb::before, #pp .au .ig:focus-within .eg::before { animation-play-state: running; }
+@keyframes auSpin { to { transform: rotate(360deg); } }
+
+#pp .au .ig input:not([type=radio]) {
+  position: absolute; inset: 2px; width: calc(100% - 4px); height: 54px; margin: 0; border: 0; outline: 0; border-radius: 16px;
+  background: var(--nb); color: var(--ni); font: inherit; font-size: 15px; padding: 0 18px; z-index: 20;
+  box-shadow: inset 6px 6px 12px var(--sd), inset -6px -6px 12px var(--sl); transition: box-shadow .25s ease;
+}
+#pp .au .ig.pk input:not([type=radio]) { padding-left: 48px; }
+#pp .au .ig input[dir=ltr] { text-align: right; }
+#pp .au .ig input:not([type=radio]):focus { border: 0; box-shadow: inset 3px 3px 7px var(--sd), inset -3px -3px 7px var(--sl); }
+#pp .au .ig > label, #pp .au .ig > .rl {
+  position: absolute; inset-inline-start: 18px; top: 18px; z-index: 30; display: block; margin: 0; color: var(--ns);
+  font-size: 15px; font-weight: 400; line-height: 22px; white-space: nowrap; pointer-events: none; transition: all .25s ease;
+}
+#pp .au .ig input:focus + label, #pp .au .ig input:not(:placeholder-shown) + label, #pp .au .ig > .rl {
+  top: -9px; inset-inline-start: 14px; padding: 0 8px; border-radius: 7px; background: var(--nb); color: var(--na);
+  font-size: 11px; line-height: 16px; font-weight: 600;
+}
+#pp .au .pt {
+  position: absolute; inset-inline-end: 12px; top: 15px; z-index: 40; width: 28px; height: 28px; padding: 0; border: 0; background: transparent;
+  color: var(--ns); display: grid; place-items: center; transition: color .2s ease, transform .2s ease;
+}
+#pp .au .pt svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+#pp .au .pt:hover, #pp .au .pt[aria-pressed=true] { color: var(--nh); transform: scale(1.1); }
+
+/* خانة نوع الحساب: نفس شكل الخانات */
+#pp .au .role {
+  position: absolute; inset: 2px; z-index: 20; border-radius: 16px; background: var(--nb); padding: 5px; gap: 6px;
+  display: grid; grid-template-columns: 1fr 1fr; box-shadow: inset 6px 6px 12px var(--sd), inset -6px -6px 12px var(--sl);
+}
+#pp .au .role label { position: relative; display: block; margin: 0; font-size: 14px; font-weight: 600; color: var(--ns); }
+#pp .au .role input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+#pp .au .role span { display: grid; place-items: center; height: 100%; border-radius: 12px; cursor: pointer; transition: all .3s ease; }
+#pp .au .role input:checked + span { color: #fff; background: linear-gradient(110deg, #006cff, #00cfff); box-shadow: 0 6px 16px rgba(0, 114, 255, .35); }
+#pp .au .role input:focus-visible + span { outline: 2px solid var(--na); outline-offset: 1px; }
+
+/* خانة رمز الأساتذة تظهر بحركة ناعمة */
+#pp .au .rv { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows .4s ease, opacity .3s ease; }
+#pp .au .rv.on { grid-template-rows: 1fr; opacity: 1; }
+#pp .au .rv-in { min-height: 0; overflow: hidden; margin: 0 -8px; padding: 8px 8px 0; }
+
+/* تذكرني / نسيت كلمة السر */
+#pp .au .au-opt { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 2px 2px 22px; }
+#pp .au .au-chk { display: flex; align-items: center; gap: 8px; margin: 0; color: var(--ns); font-size: 13.5px; font-weight: 400; }
+#pp .au .au-chk input { width: 18px; height: 18px; padding: 0; border: 0; box-shadow: none; accent-color: var(--na); }
+#pp .au .au-link { border: 0; background: none; padding: 4px 0; color: var(--nh); font: inherit; font-size: 13.5px; }
+#pp .au .au-link:hover { text-decoration: underline; }
+
+/* الزر الرئيسي */
+#pp .au .au-btn {
+  position: relative; isolation: isolate; width: 100%; height: 55px; border: 0; border-radius: 17px; background: var(--nb); color: var(--na);
+  font: 700 15px var(--font-body); overflow: hidden; box-shadow: 8px 8px 16px var(--sd), -8px -8px 16px var(--sl); transition: .3s ease;
+}
+#pp .au .au-btn::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(110deg, #006cff, #00cfff, #006cff); background-size: 200% 100%;
+  transform: translateY(100%); transition: transform .35s ease;
+}
+#pp .au .au-btn:hover::before, #pp .au .au-btn:focus-visible::before, #pp .au .au-btn.busy::before { transform: translateY(0); animation: auMove 1.5s linear infinite; }
+#pp .au .au-btn:hover, #pp .au .au-btn:focus-visible, #pp .au .au-btn.busy { color: #fff; transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 114, 255, .35); }
+#pp .au .au-btn.busy { pointer-events: none; }
+#pp .au .au-btn:active { transform: scale(.97); }
+@keyframes auMove { to { background-position: 200% 50%; } }
+
+/* الانتقال بين الدخول وإنشاء الحساب */
+#pp .au .au-switch { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 24px; font-size: 13px; color: var(--ns); }
+#pp .au .au-circle {
+  width: 48px; height: 48px; padding: 0; border: 0; border-radius: 50%; background: var(--nb); color: var(--na); display: grid; place-items: center;
+  box-shadow: 7px 7px 14px var(--sd), -7px -7px 14px var(--sl); transition: .35s ease;
+}
+#pp .au .au-circle svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+#pp[dir="rtl"] .au .au-circle .flip-ar { transform: scaleX(-1); }
+#pp .au .au-circle:hover, #pp .au .au-circle:focus-visible { color: var(--ng); background: var(--nh); transform: rotate(180deg) scale(1.08); box-shadow: 0 8px 25px rgba(0, 114, 255, .35); }
+#pp .au .au-circle:active { transform: scale(.9); }
+
+@media (max-width: 420px) {
+  #pp .au-panel { padding: 28px 20px 26px; border-radius: 28px; box-shadow: 12px 12px 24px var(--sd), -12px -12px 24px var(--sl); }
+  #pp .au h1 { font-size: 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #pp .au-card { transition: none; }
+  #pp .bgc, #pp .au .eb::before, #pp .au .eg::before { animation: none; }
+}
