@@ -5,3 +5,14 @@
 5) Firestore ثم Rules: الصق محتوى firestore.rules ثم Publish.
 6) Project settings ثم Your apps ثم أيقونة الويب </> ثم انسخ firebaseConfig والصق القيم في firebase-config.js.
 7) ارفع المجلد على Netlify من جديد. (الرقم adati-v14 في sw.js مغيَّر أصلا.)
+
+
+================ إضافات النسخة 2.4 ================
+1) رمز الأساتذة (بدل الرمز المكتوب في الكود):
+   Firebase > Firestore Database > Start collection
+   Collection ID: teacherCodes
+   Document ID: الرمز بأحرف كبيرة (مثال: ISTA-KALAA-7Q4X). يمكن أن يكون الحقل label = اسم المعهد.
+   أعط هذا الرمز لأساتذة المعهد فقط. لإلغائه احذف الوثيقة.
+2) انسخ محتوى firestore.rules كاملا إلى Firestore > Rules ثم Publish (مهم: تغيّرت القواعد).
+3) تسجيل الدخول بكلمة السر يرسل رسالة تأكيد البريد. الأستاذ لا ينشئ الأقسام قبل تأكيده.
+4) Authentication > Settings > Authorized domains: أضف دومين الاستضافة.

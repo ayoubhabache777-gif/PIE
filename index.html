@@ -624,6 +624,7 @@ html[dir="ltr"] .snack-bar { transform-origin: 0 50%; }
 </div>
 <div class="app" id="app" dir="rtl" lang="ar">
   <header class="head">
+    <button type="button" class="menu-btn acct" id="acctbtn" data-act="portal-open" aria-label="الأساتذة والمتدربون"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6"/><path d="M5 20c.7-3.6 3.6-5.4 7-5.4s6.3 1.8 7 5.4"/></svg><b class="ini" aria-hidden="true"></b></button>
     <button class="menu-btn" id="menubtn" data-act="open-menu" aria-label="القائمة" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     <p class="date" id="date"></p>
     <h1 class="logo"><svg viewBox="0 0 745 440" role="img" aria-label="PIE"><defs><linearGradient id="G2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8DBBFF"/><stop offset="1" stop-color="#3F7DEB"/></linearGradient></defs><path class="pd" fill-rule="evenodd" d="M41 192H155V12H300C360 12 392 52 392 128C392 210 355 265 300 265H41C21 265 5 249 5 229C5 209 21 192 41 192ZM200 85H290C312 85 330 103 330 136C330 170 312 188 290 188H200Z"/><path fill="url(#G2)" d="M95 12C165 12 202 70 202 150L202 262C202 350 170 412 95 440Z"/><g class="pl"><rect x="403" y="10" width="79" height="75"/><rect x="403" y="100" width="79" height="230"/><path d="M503 10H740V85H582V135H685V205H582V257H740V330H503Z"/></g></svg></h1>
@@ -639,6 +640,7 @@ html[dir="ltr"] .snack-bar { transform-origin: 0 50%; }
 
   <div class="panel" id="p-today" role="tabpanel" aria-labelledby="t-today">
     <div id="hol" aria-live="polite"></div>
+    <div id="gate"></div>
     <section class="today" id="today" aria-live="polite"></section>
     <section aria-labelledby="hl">
       <div class="sec"><h2 id="hl">مهام اليوم</h2><span id="count"></span></div>
@@ -653,6 +655,7 @@ html[dir="ltr"] .snack-bar { transform-origin: 0 50%; }
       </form>
       <div id="sug"></div>
     </section>
+    <section class="card" id="ach" aria-live="polite"></section>
   </div>
 
   <div class="panel" id="p-challenges" role="tabpanel" aria-labelledby="t-challenges" hidden></div>
@@ -754,6 +757,11 @@ html[dir="ltr"] .snack-bar { transform-origin: 0 50%; }
   <p class="sub" id="holinfo"></p>
   <p class="sub" id="holmsg" role="status"></p>
   <button type="button" class="btn ghost" id="holtest" data-act="hol-test" hidden>تجربة إشعار</button>
+        <div class="setrow" style="margin-top:14px"><span class="setlab">تذكير يومي بالعادات</span>
+          <button type="button" class="sw" id="dailysw" role="switch" aria-checked="false" aria-label="تذكير يومي بالعادات" data-x="daily-toggle" dir="ltr"><span class="sw-knob"></span></button></div>
+        <div class="setrow" style="margin-top:8px"><label class="setlab" for="dailyt">وقت التذكير</label><input type="time" id="dailyt" value="20:00" data-x="daily-time"></div>
+        <p class="sub">إشعار مرة في اليوم إذا لم تنجز عاداتك</p>
+        <p class="sub" id="dailymsg" role="status"></p>
       </div></div></div>
     </section>
     <section class="acc" data-g="tools" style="--n:2">
@@ -774,6 +782,8 @@ html[dir="ltr"] .snack-bar { transform-origin: 0 50%; }
       <div class="acc-b" id="acc-support" role="region" aria-labelledby="acch-support"><div class="acc-in"><div class="acc-pad">
         <a class="trow" href="https://t.me/PIE_SUPPORT" target="_blank" rel="noopener noreferrer"><i class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3L3 10.5l6 2.5 2.5 6L21 3zM9 13l5-4"/></svg></i><span>تواصل مع الدعم</span><svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
         <p class="sub">أبلغ عن مشكلة أو اقترح تحسينًا</p>
+        <button type="button" class="trow" data-x="onb-open"><i class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v.01M11 12h1v4h1"/></svg></i><span>جولة تعريفية</span><svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+        <a class="trow" href="privacy.html" target="_blank" rel="noopener"><i class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/></svg></i><span>سياسة الخصوصية</span><svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
       </div></div></div>
     </section>
   </div>
@@ -1089,6 +1099,42 @@ html[dir="ltr"] .snack-bar { transform-origin: 0 50%; }
     "حجم الملف كبير جدًا للإرسال.": ["The file is too large to send.", "Le fichier est trop volumineux pour être envoyé."],
     "صفحة": ["Page", "Page"]
   });
+  Object.assign(D, {
+    "تذكير يومي بالعادات": ["Daily habit reminder", "Rappel quotidien des habitudes"],
+    "وقت التذكير": ["Reminder time", "Heure du rappel"],
+    "إشعار مرة في اليوم إذا لم تنجز عاداتك": ["One notification a day if your habits aren’t done", "Une notification par jour si tes habitudes ne sont pas faites"],
+    "جولة تعريفية": ["App tour", "Visite guidée"],
+    "سياسة الخصوصية": ["Privacy policy", "Politique de confidentialité"],
+    "الإنجازات": ["Achievements", "Réussites"],
+    "أطول سلسلة حالية": ["Longest current streak", "Plus longue série actuelle"],
+    "أول عادة": ["First habit", "Première habitude"],
+    "10 إنجازات": ["10 check-ins", "10 validations"],
+    "سلسلة 3 أيام": ["3-day streak", "Série de 3 jours"],
+    "سلسلة أسبوع": ["7-day streak", "Série de 7 jours"],
+    "50 إنجازًا": ["50 check-ins", "50 validations"],
+    "سلسلة 30 يومًا": ["30-day streak", "Série de 30 jours"],
+    "100 إنجاز": ["100 check-ins", "100 validations"],
+    "أتممت تحدي 20 يومًا": ["20-day challenge done", "Défi de 20 jours terminé"],
+    "أتممت تحدي الشهر": ["Month challenge done", "Défi du mois terminé"],
+    "تم تفعيل التذكير اليومي": ["Daily reminder is on", "Rappel quotidien activé"],
+    "تم إيقاف التذكير اليومي": ["Daily reminder is off", "Rappel quotidien désactivé"],
+    "لم تنجز عاداتك اليوم بعد. دقيقة واحدة تكفي.": ["You haven’t finished today’s habits yet. One minute is enough.", "Tu n’as pas encore terminé tes habitudes du jour. Une minute suffit."],
+    "تخطّي": ["Skip", "Passer"],
+    "التالي": ["Next", "Suivant"],
+    "ابدأ": ["Start", "Commencer"],
+    "هل أنت متدرب في معهد؟": ["Are you a trainee at an institute?", "Es-tu stagiaire dans un institut ?"],
+    "سجّل الدخول لتنضم إلى قسمك ويتابع أستاذك تقدمك.": ["Sign in to join your section so your teacher can follow your progress.", "Connecte-toi pour rejoindre ta classe et que ton enseignant suive ta progression."],
+    "تسجيل الدخول": ["Sign in", "Se connecter"],
+    "تسجيل الدخول (متدرب أو أستاذ)": ["Sign in (trainee or teacher)", "Se connecter (stagiaire ou enseignant)"],
+    "ابدأ بدون حساب": ["Start without an account", "Commencer sans compte"],
+    "مرحبًا بك في PIE": ["Welcome to PIE", "Bienvenue sur PIE"],
+    "أضف عاداتك، ثم اضغط على النجمة كل يوم عند إنجازها.": ["Add your habits, then tap the star each day when you do them.", "Ajoute tes habitudes, puis touche l’étoile chaque jour quand tu les fais."],
+    "حافظ على سلسلتك": ["Keep your streak", "Garde ta série"],
+    "ابدأ تحدي 20 يومًا، وراقب سلسلتك وإنجازاتك.": ["Start a 20-day challenge and watch your streak and achievements grow.", "Lance un défi de 20 jours et suis ta série et tes réussites."],
+    "مع أستاذك": ["With your teacher", "Avec ton enseignant"],
+    "من الإعدادات ← الأساتذة والمتدربون انضم إلى قسمك وأرسل عملك PDF.": ["In Settings → Teachers and trainees, join your section and send your work as a PDF.", "Dans Paramètres → Enseignants et stagiaires, rejoins ta classe et envoie ton travail en PDF."]
+  });
+  window.PIE_T = function (x) { return t(x); };
   function t(s) { var e = D[s]; return lang === 'ar' || !e ? s : e[lang === 'en' ? 0 : 1]; }
   function tr(root) {
     var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT), n, a = [];
@@ -1556,6 +1602,7 @@ html[dir="ltr"] .snack-bar { transform-origin: 0 50%; }
         left.map(function (s) { return '<button class="chip" data-act="suggest" data-name="' + esc(s) + '">' + esc(s) + '</button>'; }).join('') + '</div>'
       : '';
     renderHol();
+    if (window.PIE_X) PIE_X.today();
   }
 
   function itemHtml(it) {
@@ -1874,7 +1921,7 @@ html[dir="ltr"] .snack-bar { transform-origin: 0 50%; }
   }
   /* حزمة الأجوبة التي تُرسل إلى أستاذ القسم: كل شيء ما عدا الأقسام الخاصة (قسم الحلم) */
   /* رقم الإصدار: غيّره هنا فقط، وغيّر CACHE في sw.js إلى الرقم نفسه */
-  window.PIE_VERSION = '2.1';
+  window.PIE_VERSION = '2.6';
   Array.prototype.forEach.call(document.querySelectorAll('.ver'), function (e) { e.textContent = window.PIE_VERSION; });
   window.PIE_STATE = function () { return state; };
   window.PIE_PACK = function (st) {
@@ -2600,6 +2647,7 @@ html[dir="ltr"] .snack-bar { transform-origin: 0 50%; }
   })();
 })();
 </script>
+<script src="extras.js"></script>
 <script>if('serviceWorker' in navigator){window.addEventListener('load',function(){try{navigator.serviceWorker.register('./sw.js')}catch(e){}})}</script>
 </body>
 </html>
